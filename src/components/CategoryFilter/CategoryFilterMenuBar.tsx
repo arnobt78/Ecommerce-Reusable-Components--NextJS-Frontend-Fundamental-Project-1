@@ -6,8 +6,19 @@ import { FilterDropDown } from "./FilterDropDown";
 
 import { products } from "../../data/products";
 
-// Dynamically extract unique filter options from product data
+/**
+ * Helper Function: getUnique
+ * Extracts unique values from an array, removing duplicates and empty values.
+ * Used to dynamically generate filter options from product data.
+ */
 const getUnique = (arr: string[]) => Array.from(new Set(arr)).filter(Boolean);
+
+/**
+ * Filter Data Configuration:
+ * Dynamically generates filter options from product data.
+ * Each filter category (brands, flavors, strength) extracts unique values from products.
+ * This ensures filters always match available products without manual updates.
+ */
 const filterData = [
   {
     title: "brands",
@@ -23,12 +34,27 @@ const filterData = [
   },
 ];
 
-// The CategoryFilterMenuBar component renders a menu bar with multiple filter dropdowns
+/**
+ * CategoryFilterMenuBar Component:
+ * Main filter bar that contains multiple filter dropdowns (Brand, Flavor, Strength).
+ * Manages the state of all selected filters and communicates changes to parent component.
+ * Features custom SVG icons for each filter category, matching the Figma design.
+ */
 
 export const CategoryFilterMenuBar: React.FC<{ onFilterChange?: (filters: { brands: string[]; flavors: string[]; strength: string[] }) => void }> = ({ onFilterChange }) => {
+  /**
+   * Selected Filters State:
+   * Array of arrays - each inner array represents selected values for one filter category.
+   * [0] = brands, [1] = flavors, [2] = strength
+   * Example: [[], ["Mint", "Lime"], ["Medium"]] = no brands, Mint & Lime flavors, Medium strength
+   */
   const [selected, setSelected] = useState<string[][]>([[], [], []]);
 
-  // Filter products based on selected filters (for parent usage)
+  /**
+   * Filter Change Effect:
+   * Watches selected filters and notifies parent component whenever filters change.
+   * This allows the parent (ListProductCard) to update the product list accordingly.
+   */
   React.useEffect(() => {
     if (onFilterChange) {
       onFilterChange({
@@ -39,7 +65,11 @@ export const CategoryFilterMenuBar: React.FC<{ onFilterChange?: (filters: { bran
     }
   }, [selected, onFilterChange]);
 
-  // SVG icons extracted from the Figma/SVG for each filter
+  /**
+   * Custom SVG Icons:
+   * Each filter category has a unique icon extracted from the Figma design.
+   * These icons are passed to FilterDropDown components for visual identification.
+   */
   // Checklist icon for Brands
   const brandIcon = (
     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="26" viewBox="0 0 25 26" fill="none">
@@ -59,7 +89,12 @@ export const CategoryFilterMenuBar: React.FC<{ onFilterChange?: (filters: { bran
     </svg>
   );
 
-  // Handle change in selected values for each dropdown
+  /**
+   * Handle Filter Change:
+   * Updates the selected filters state when a dropdown selection changes.
+   * @param idx - Index of the filter category (0=brands, 1=flavors, 2=strength)
+   * @param values - Array of selected values for that category
+   */
   const handleChange = (idx: number, values: string[]) => {
     setSelected((prev) => prev.map((s, i) => (i === idx ? values : s)));
   };
@@ -70,6 +105,7 @@ export const CategoryFilterMenuBar: React.FC<{ onFilterChange?: (filters: { bran
       style={{ minWidth: 0, minHeight: 80 }}
     >
       <div className="flex flex-col sm:flex-row w-full max-w-2xl gap-2 sm:gap-0">
+        {/* Brands Filter Dropdown */}
         <FilterDropDown
           title={filterData[0].title}
           _icon={brandIcon}
@@ -77,9 +113,11 @@ export const CategoryFilterMenuBar: React.FC<{ onFilterChange?: (filters: { bran
           selected={selected[0]}
           onChange={(values) => handleChange(0, values)}
         />
+        {/* Divider: Only visible on desktop (sm and up) */}
         <div className="hidden sm:flex items-center mx-2" style={{ height: 'auto' }}>
           <div className="border-l border-[#E0E0E0]" style={{ height: '56px', width: 0, margin: '0 auto' }} />
         </div>
+        {/* Flavors Filter Dropdown */}
         <FilterDropDown
           title={filterData[1].title}
           _icon={flavorIcon}
@@ -87,9 +125,11 @@ export const CategoryFilterMenuBar: React.FC<{ onFilterChange?: (filters: { bran
           selected={selected[1]}
           onChange={(values) => handleChange(1, values)}
         />
+        {/* Divider: Only visible on desktop */}
         <div className="hidden sm:flex items-center mx-2" style={{ height: 'auto' }}>
           <div className="border-l border-[#E0E0E0]" style={{ height: '56px', width: 0, margin: '0 auto' }} />
         </div>
+        {/* Strength Filter Dropdown */}
         <FilterDropDown
           title={filterData[2].title}
           _icon={strengthIcon}

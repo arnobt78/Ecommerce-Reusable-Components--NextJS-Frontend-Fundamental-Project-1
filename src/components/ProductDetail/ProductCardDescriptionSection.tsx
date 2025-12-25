@@ -1,16 +1,31 @@
 "use client";
 import React, { useState } from "react";
 
+/**
+ * ProductCardDescriptionSection Props:
+ * Contains product specification and usage information.
+ */
 interface ProductCardDescriptionSectionProps {
   brand: string;
   flavor: string;
   strength: string;
   nicotinePerPouch: string;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  description?: string;
-  howToUse?: string;
+  description?: string; // Optional product description
+  howToUse?: string; // Optional usage instructions
 }
 
+/**
+ * ProductCardDescriptionSection Component:
+ * Displays product specifications and usage instructions in collapsible sections.
+ * 
+ * Features:
+ * - Collapsible/expandable sections for better UX
+ * - Product specifications with dotted line separators
+ * - Smooth animations when expanding/collapsing
+ * - Accessible with ARIA attributes
+ * - Default open state for better initial visibility
+ */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const ProductCardDescriptionSection: React.FC<ProductCardDescriptionSectionProps> = ({
   brand,
@@ -20,22 +35,24 @@ export const ProductCardDescriptionSection: React.FC<ProductCardDescriptionSecti
   description,
   howToUse,
 }) => {
-  // Collapsible state for each section
+  // Collapsible state for each section - both default to open (true)
   const [descOpen, setDescOpen] = useState(true);
   const [howToUseOpen, setHowToUseOpen] = useState(true);
 
   return (
     <div className="w-full max-w-[687px]">
-      {/* Product Description */}
+      {/* Product Description Section: Collapsible section with product specifications */}
       <div className="flex flex-col gap-5 border-b border-[#C4C4C4] pb-8">
+        {/* Toggle Button: Click to expand/collapse description */}
         <button
           className="flex flex-row items-center justify-between w-full bg-transparent border-0 p-0 cursor-pointer focus:outline-none"
           type="button"
-          onClick={() => setDescOpen((prev) => !prev)}
-          aria-expanded={descOpen}
-          aria-controls="product-desc-section"
+          onClick={() => setDescOpen((prev) => !prev)} // Toggle open/closed state
+          aria-expanded={descOpen} // Accessibility: Screen readers know if expanded
+          aria-controls="product-desc-section" // Links button to content section
         >
           <span className="font-semibold text-[24px] leading-[29px] text-black">Product Description</span>
+          {/* Animated Chevron: Rotates 180° when section is closed */}
           <svg
             width="20"
             height="10"
@@ -48,13 +65,16 @@ export const ProductCardDescriptionSection: React.FC<ProductCardDescriptionSecti
             <path d="M1 1L10 9L19 1" stroke="#000" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </button>
+        {/* Collapsible Content: Smoothly animates height and opacity */}
         <div
           id="product-desc-section"
           className={`flex flex-col gap-1 mt-2 transition-all duration-300 ease-in-out overflow-hidden ${descOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}
-          aria-hidden={!descOpen}
+          aria-hidden={!descOpen} // Accessibility: Hide from screen readers when collapsed
         >
+          {/* Product Specifications: Brand, Flavor, Strength, Nicotine with dotted line separators */}
           <div className="flex flex-row items-center text-[#343232] text-[19px] leading-[29px] font-normal">
             <span>Brand:</span>
+            {/* Dotted line separator: Creates visual connection between label and value */}
             <span className="flex-1 border-b border-dotted border-[#343232] mx-2 h-[1px]" style={{marginTop: 14}}></span>
             <span className="ml-2">{brand}</span>
           </div>

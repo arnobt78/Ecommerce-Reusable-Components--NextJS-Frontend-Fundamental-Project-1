@@ -1,16 +1,36 @@
 import React from "react";
 
+/**
+ * ProductQuantityDropdownSelect Props:
+ * Dropdown component for selecting product quantity.
+ */
 export interface ProductQuantityDropdownSelectProps {
-  value: number;
-  onChange: (qty: number) => void;
-  min?: number;
-  max?: number;
-  salePrice?: string;
-  originalPrice?: string;
+  value: number; // Currently selected quantity
+  onChange: (qty: number) => void; // Callback when quantity changes
+  min?: number; // Minimum quantity (default: 1)
+  max?: number; // Maximum quantity (default: 10)
+  salePrice?: string; // Optional sale price for display
+  originalPrice?: string; // Original price for display
 }
 
+/**
+ * Default Quantity Options:
+ * Standard range of 1-10 items. Can be customized via min/max props.
+ */
 const defaultOptions = [1,2,3,4,5,6,7,8,9,10];
 
+/**
+ * ProductQuantityDropdownSelect Component:
+ * Custom dropdown for selecting product quantity.
+ * 
+ * Features:
+ * - Custom styled dropdown (not native select)
+ * - Click outside to close
+ * - Escape key to close
+ * - Auto-scrolls to selected value when opened
+ * - Keyboard accessible
+ * - Smooth animations
+ */
 export const ProductQuantityDropdownSelect: React.FC<ProductQuantityDropdownSelectProps> = ({
   value,
   onChange,
@@ -19,14 +39,20 @@ export const ProductQuantityDropdownSelect: React.FC<ProductQuantityDropdownSele
   salePrice,
   originalPrice,
 }) => {
-  const [open, setOpen] = React.useState(false);
-  const dropdownRef = React.useRef<HTMLDivElement>(null);
-  const listRef = React.useRef<HTMLDivElement>(null);
+  const [open, setOpen] = React.useState(false); // Dropdown open/closed state
+  const dropdownRef = React.useRef<HTMLDivElement>(null); // Ref for click-outside detection
+  const listRef = React.useRef<HTMLDivElement>(null); // Ref for scroll-to-selected functionality
+  // Generate quantity options array based on min/max, or use defaults
   const quantityOptions = React.useMemo(() => {
-    if (min === 1 && max === 10) return defaultOptions;
-    return Array.from({ length: max - min + 1 }, (_, i) => i + min);
+    if (min === 1 && max === 10) return defaultOptions; // Use defaults if standard range
+    return Array.from({ length: max - min + 1 }, (_, i) => i + min); // Generate custom range
   }, [min, max]);
 
+  /**
+   * Click Outside Handler:
+   * Closes dropdown when user clicks outside of it.
+   * Uses mousedown event for better UX (fires before click).
+   */
   React.useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
@@ -39,6 +65,10 @@ export const ProductQuantityDropdownSelect: React.FC<ProductQuantityDropdownSele
     return () => document.removeEventListener('mousedown', handleClick);
   }, [open]);
 
+  /**
+   * Escape Key Handler:
+   * Closes dropdown when user presses Escape key.
+   */
   React.useEffect(() => {
     function handleKey(e: KeyboardEvent) {
       if (e.key === 'Escape') setOpen(false);
@@ -49,24 +79,35 @@ export const ProductQuantityDropdownSelect: React.FC<ProductQuantityDropdownSele
     return () => document.removeEventListener('keydown', handleKey);
   }, [open]);
 
+  /**
+   * Auto-Scroll to Selected:
+   * When dropdown opens, automatically scrolls to show the currently selected value.
+   * Improves UX by ensuring selected value is visible.
+   */
   React.useEffect(() => {
     if (open && listRef.current) {
       const idx = quantityOptions.indexOf(value);
       if (idx >= 0) {
         const item = listRef.current.children[idx] as HTMLElement;
-        if (item) item.scrollIntoView({ block: 'nearest' });
+        if (item) item.scrollIntoView({ block: 'nearest' }); // Scroll to selected item
       }
     }
   }, [open, value, quantityOptions]);
 
-  // Helper to multiply price strings (e.g. "12.99") by quantity and format as string
+  /**
+   * Price Calculation Helper:
+   * Multiplies a price string by quantity and formats the result.
+   * Handles currency symbols, commas, and decimal points.
+   * 
+   * Example: multiplyPrice("€ 4,99", 3) => "14.97 €"
+   */
   function multiplyPrice(priceStr?: string, qty: number = 1) {
     if (!priceStr) return '';
-    // Remove any non-numeric except dot and comma
+    // Remove any non-numeric except dot and comma, then normalize comma to dot
     const normalized = priceStr.replace(/[^\d.,]/g, '').replace(',', '.');
     const num = parseFloat(normalized);
-    if (isNaN(num)) return priceStr;
-    // Keep 2 decimals, add currency if present
+    if (isNaN(num)) return priceStr; // Return original if parsing fails
+    // Keep 2 decimals, preserve currency symbol if present
     const currency = priceStr.replace(/[\d.,\s]/g, '');
     return (num * qty).toFixed(2) + (currency ? ' ' + currency : '');
   }

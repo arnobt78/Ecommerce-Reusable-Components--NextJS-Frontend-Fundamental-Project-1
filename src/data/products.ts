@@ -1,6 +1,21 @@
-// Centralized product data for the app
+/**
+ * Centralized Product Data:
+ * This file contains all product data for the application.
+ * Having a single source of truth makes it easy to update products and ensures consistency.
+ * 
+ * Benefits:
+ * - Easy to maintain and update
+ * - Type-safe with TypeScript interfaces
+ * - Can be easily replaced with API calls later
+ * - Used by all components that need product information
+ */
 import type { StockStatus } from "../components/ProductCard/SingleProductCard";
 
+/**
+ * ProductData Interface:
+ * Defines the structure of a product object.
+ * All products in the app must conform to this interface.
+ */
 export interface ProductData {
   productImage: string;
   productName: string;
@@ -17,6 +32,17 @@ export interface ProductData {
   howToUse?: string;
 }
 
+/**
+ * Products Array:
+ * Contains all available products in the store.
+ * This array is used by:
+ * - ListProductCard for displaying products
+ * - CategoryFilterMenuBar for generating filter options
+ * - ProductDetailLayout for showing product details
+ * 
+ * Note: Some products may have duplicate data for demonstration purposes.
+ * In a real application, this would come from a database or API.
+ */
 export const products: ProductData[] = [
   {
     productImage: "/product-image.png",

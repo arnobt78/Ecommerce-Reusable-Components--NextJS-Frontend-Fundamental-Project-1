@@ -3,6 +3,11 @@
 // import Image from "next/image";
 import React from "react";
 
+/**
+ * Stock Status Type:
+ * Defines the possible stock states for a product.
+ * Used throughout the app to display appropriate stock indicators.
+ */
 export type StockStatus = 'in_stock' | 'low_stock' | 'last_3' | 'no_stock';
 
 interface SingleProductCardProps {
@@ -16,6 +21,18 @@ interface SingleProductCardProps {
   onAddToBasket?: () => void;
 }
 
+/**
+ * SingleProductCard Component:
+ * Reusable product card component displaying product information in a card format.
+ * 
+ * Features:
+ * - Responsive sizing (smaller on mobile, larger on desktop)
+ * - Gradient background matching Figma design
+ * - Sale badges and shipping labels
+ * - Hover effects for interactivity
+ * - Optional "Add to Basket" functionality
+ * - Price display with sale price support
+ */
 export const SingleProductCard: React.FC<SingleProductCardProps> = ({
   productImage,
   productName,
@@ -30,19 +47,19 @@ export const SingleProductCard: React.FC<SingleProductCardProps> = ({
     <div
       className="relative w-[160px] h-[240px] sm:w-full sm:max-w-[248px] sm:h-[329px] rounded-[16px] mx-auto overflow-hidden shadow-lg flex-shrink hover:scale-[1.01] transition-transform duration-300 ease-in-out"
       style={{
-        background: "linear-gradient(180deg, #CEF6F8 0%, #F0F1F1 100%)",
+        background: "linear-gradient(180deg, #CEF6F8 0%, #F0F1F1 100%)", // Figma-accurate gradient
         minWidth: 0,
       }}
     >
-      {/* Top badges */}
+      {/* Top badges: Sale label (conditional) and shipping label */}
       <div className="absolute flex flex-row w-full justify-between top-[8px] left-0 px-2 z-0">
-        {/* Sale badge (conditionally render) */}
+        {/* Sale badge (conditionally render) - Only shows if product is on sale */}
         {saleLabel ? (
           <div className="bg-white rounded-[6px] w-[54px] h-[18px] flex items-center justify-center">
             <span className="italic font-semibold text-[10px] leading-[12px] text-[#C02929]">{saleLabel}</span>
           </div>
-        ) : <div className="w-[54px] h-[18px]" />}
-        {/* Free shipping badge */}
+        ) : <div className="w-[54px] h-[18px]" />} {/* Spacer to maintain layout when no sale */}
+        {/* Free shipping badge - Always visible */}
         <div className="bg-white rounded-[6px] w-[74px] h-[18px] flex items-center justify-center">
           <span className="italic font-semibold text-[10px] leading-[12px] text-black">{shippingLabel}</span>
         </div>
@@ -64,9 +81,11 @@ export const SingleProductCard: React.FC<SingleProductCardProps> = ({
 
       {/* Product name, prices, and Add to Basket (bottom area) */}
       <div className="absolute left-2 right-2 bottom-3 flex flex-row items-end justify-between">
+        {/* Product Info Section: Name and pricing */}
         <div className="flex flex-col gap-1">
           <span className="font-normal text-[12px] leading-[14px] text-black truncate">{productName}</span>
           <div className="flex items-center gap-2">
+            {/* Conditional price display: Show sale price + strikethrough original, or just original */}
             {salePrice ? (
               <>
                 <span className="font-normal text-[12px] leading-[14px] text-[#C02929]">{salePrice}</span>
@@ -79,13 +98,15 @@ export const SingleProductCard: React.FC<SingleProductCardProps> = ({
         </div>
 
         {/* Decorative ellipses and Add to Basket button (right) */}
+        {/* The decorative circles create a layered visual effect matching the Figma design */}
         <div className="relative flex flex-row items-end gap-1 min-w-[40px] justify-end">
           <div className="w-[36px] h-[36px] rounded-full bg-[#CCEBE5] z-0 absolute right-0 bottom-0" />
           <div className="w-[28px] h-[28px] rounded-full bg-[#DDFFF8] z-0 absolute right-1 bottom-1" />
+          {/* Add to Basket Button: Circular button with basket icon, includes hover and active states */}
           <button
             className="w-[28px] h-[28px] flex items-center justify-center z-10 focus:outline-none absolute right-1 bottom-1 cursor-pointer rounded-full hover:bg-[#fff] active:bg-[#B2E0DF] scale-105 transition-transform duration-300 ease-in-out"
             onClick={onAddToBasket}
-            aria-label="Add to Basket"
+            aria-label="Add to Basket" // Accessibility: Screen readers will announce this button
             type="button"
           >
             {/* Simple basket icon SVG */}

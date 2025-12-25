@@ -1,20 +1,31 @@
 import React from "react";
 
-// Data for each quantity image card
-
+/**
+ * ProductQuantityImageOption Interface:
+ * Defines the structure for quantity selection options with visual representation.
+ */
 export interface ProductQuantityImageOption {
-  percent: string;
-  label: string;
-  value: number;
-  description?: string;
+  percent: string; // Discount percentage badge (e.g., "-10%")
+  label: string; // Label displayed on the can (e.g., "10X")
+  value: number; // Actual quantity value
+  description?: string; // Optional description text
 }
 
+/**
+ * ProductQuantityImageSection Props:
+ * Visual quantity selector with can images and discount badges.
+ */
 export interface ProductQuantityImageSectionProps {
-  options?: ProductQuantityImageOption[];
-  selected?: number;
-  onSelect?: (value: number) => void;
+  options?: ProductQuantityImageOption[]; // Custom options, or uses defaults
+  selected?: number; // Currently selected quantity value
+  onSelect?: (value: number) => void; // Callback when quantity is selected
 }
 
+/**
+ * Default Quantity Options:
+ * Pre-configured bulk quantity options with discount percentages.
+ * Users can select larger quantities to get better discounts.
+ */
 const defaultOptions: ProductQuantityImageOption[] = [
   { percent: "-10%", label: "10X", value: 10, description: "10 cans" },
   { percent: "-13%", label: "20X", value: 20, description: "20 cans" },
@@ -22,7 +33,11 @@ const defaultOptions: ProductQuantityImageOption[] = [
   { percent: "-20%", label: "50X", value: 50, description: "50 cans" },
 ];
 
-// SVG for the can image (reusable)
+/**
+ * CanSVG Component:
+ * Reusable SVG component for the can image with optional label overlay.
+ * The label is transformed/rotated to match the Figma design.
+ */
 function CanSVG({ label }: { label?: string }) {
   return (
     <svg width="60" height="60" viewBox="0 0 57 50" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ position: 'relative', display: 'block' }}>
@@ -69,6 +84,17 @@ function CanSVG({ label }: { label?: string }) {
 }
 
 
+/**
+ * ProductQuantityImageSection Component:
+ * Visual quantity selector with can images, discount badges, and selection states.
+ * 
+ * Features:
+ * - Visual can representations for each quantity option
+ * - Discount percentage badges
+ * - Selected state with border highlight
+ * - Click to select quantity
+ * - Responsive spacing
+ */
 export const ProductQuantityImageSection: React.FC<ProductQuantityImageSectionProps> = ({
   options = defaultOptions,
   selected,
@@ -76,30 +102,30 @@ export const ProductQuantityImageSection: React.FC<ProductQuantityImageSectionPr
 }) => {
   return (
     <div className="w-full flex flex-row justify-center gap-2 sm:gap-6 mt-2 mb-2">
+      {/* Map through quantity options and render as selectable cards */}
       {options.map((opt, idx) => {
-        const isSelected = selected === opt.value;
+        const isSelected = selected === opt.value; // Check if this option is currently selected
         return (
           <button
             type="button"
             key={opt.label}
             className={`relative flex flex-col items-center justify-center bg-[#F0F1F1] rounded-[5.8px] shadow focus:outline-none transition-all duration-300 ${isSelected ? 'border-2 border-black/90' : 'border border-transparent'} group`}
             style={{ width: 86.5, height: 86.5, cursor: onSelect ? 'pointer' : 'default' }}
-            aria-pressed={isSelected}
+            aria-pressed={isSelected} // Accessibility: Indicates selected state
             tabIndex={0}
-            onClick={() => onSelect?.(opt.value)}
+            onClick={() => onSelect?.(opt.value)} // Select this quantity when clicked
           >
-            {/* Discount badge */}
+            {/* Discount Badge: Shows discount percentage (e.g., "-10%") */}
             <div
               className="absolute left-1/2 -translate-x-1/2 -top-3 flex flex-row justify-center items-center px-3 py-1 bg-[#EBF5F5] rounded-[6.9px] shadow"
               style={{ minWidth: 43, height: 17 }}
             >
               <span className="text-[10.3px] leading-[13px] font-normal text-black uppercase" style={{ fontFamily: 'Inter, sans-serif' }}>{opt.percent}</span>
             </div>
-            {/* Can SVG and label, centered */}
+            {/* Can SVG and Label: Centered can image with rotated label overlay */}
             <div className="relative flex flex-col items-center justify-center w-full grow" style={{height: '60px'}}>
-            {/* <span className="absolute left-1/2 top-1.5/4 -translate-x-1/2 -translate-y-1/2 text-[18px] font-medium italic text-black select-none pointer-events-none z-10" style={{ fontFamily: 'Inter, sans-serif', width: '100%', textAlign: 'center' }}>{opt.label}</span> */}
               <div className="flex items-center justify-center w-full h-full">
-                <CanSVG label={opt.label} />
+                <CanSVG label={opt.label} /> {/* Can image with label overlay */}
               </div>
             </div>
             {/* Optionally show description below */}

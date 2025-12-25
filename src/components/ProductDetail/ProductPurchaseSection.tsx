@@ -4,6 +4,10 @@ import type { StockStatus } from "../ProductCard/SingleProductCard";
 import { ProductQuantityDropdownSelect } from "./ProductQuantityDropdownSelect";
 import { ProductQuantityImageSection } from "./ProductQuantityImageSection";
 
+/**
+ * ProductPurchaseSection Props:
+ * Contains all data and callbacks needed for the purchase interface.
+ */
 interface ProductPurchaseSectionProps {
   productName: string;
   stockStatus: StockStatus;
@@ -15,6 +19,18 @@ interface ProductPurchaseSectionProps {
   onAddToCart: () => void;
 }
 
+/**
+ * ProductPurchaseSection Component:
+ * Main purchase interface for product detail page.
+ * 
+ * Features:
+ * - Product name and stock status display
+ * - Quantity selection (dropdown + visual quantity selector)
+ * - Dynamic price calculation based on quantity
+ * - Buy Now and Add to Cart buttons
+ * - Shipping options display
+ * - Guarantee information
+ */
 export const ProductPurchaseSection: React.FC<ProductPurchaseSectionProps> = ({
   productName,
   stockStatus,
@@ -27,28 +43,30 @@ export const ProductPurchaseSection: React.FC<ProductPurchaseSectionProps> = ({
 }) => {
   return (
     <div className="w-full max-w-[687px] flex flex-col gap-6 px-2 sm:px-0">
-      {/* Product Name & Stock Status Centered */}
+      {/* Product Name & Stock Status: Centered display with visual stock indicator */}
       <div className="flex flex-col items-center justify-center w-full text-center">
         <span className="font-medium text-[30px] leading-[40px] text-black -tracking-[0.01em] break-words">{productName}</span>
         <div className="flex flex-row items-center gap-2 flex-wrap justify-center mt-2">
+          {/* Dynamic Stock Status Indicator: Color and label change based on stock status */}
           {(() => {
-            let color = '#15FF00';
+            let color = '#15FF00'; // Green for in stock
             let shadow = '0 0 8px 2px #15FF00';
             let label = 'In stock';
             if (stockStatus === 'low_stock') {
-              color = '#FFD600';
+              color = '#FFD600'; // Yellow for low stock
               shadow = '0 0 8px 2px #FFD600';
               label = 'Low stock';
             } else if (stockStatus === 'last_3') {
-              color = '#FFD600';
+              color = '#FFD600'; // Yellow for last items
               shadow = '0 0 8px 2px #FFD600';
               label = 'Last 3 cans';
             } else if (stockStatus === 'no_stock') {
-              color = '#FF3B30';
+              color = '#FF3B30'; // Red for out of stock
               shadow = '0 0 8px 2px #FF3B30';
               label = 'No stock';
             }
             return <>
+              {/* Colored dot with glow effect */}
               <span className="inline-block w-2 h-2 rounded-full mr-2" style={{ backgroundColor: color, boxShadow: shadow }} />
               <span className="text-[17px] leading-[21px] text-black">{label}</span>
             </>;
@@ -56,10 +74,10 @@ export const ProductPurchaseSection: React.FC<ProductPurchaseSectionProps> = ({
         </div>
       </div>
 
-      {/* Quantity and Price */}
+      {/* Quantity and Price Section: Quantity selector and calculated total price */}
       <div className="flex flex-row items-center mt-2 flex-wrap justify-between">
         <div className="flex flex-row w-full justify-between items-center">
-          {/* Quantity Dropdown Left */}
+          {/* Quantity Dropdown: Allows user to select quantity (1-10) */}
           <div className="relative">
             <ProductQuantityDropdownSelect
               value={quantity}
@@ -68,13 +86,14 @@ export const ProductPurchaseSection: React.FC<ProductPurchaseSectionProps> = ({
               originalPrice={originalPrice}
             />
           </div>
-          {/* Price Area Right (duplicated from dropdown for layout, but hidden in dropdown) */}
+          {/* Price Display: Shows total price (price × quantity) with sale price support */}
           {(salePrice || originalPrice) && (
             <div className="flex flex-row items-center gap-2 ml-4">
               {salePrice ? (
                 <>
+                  {/* Original Price (strikethrough): Shows original total when on sale */}
                   <span className="font-normal text-[12px] leading-[13px] text-black line-through">
-                    {/* Multiply originalPrice by quantity */}
+                    {/* Price Calculation: Extracts number, multiplies by quantity, preserves currency symbol */}
                     {(() => {
                       const normalized = originalPrice.replace(/[^\d.,]/g, '').replace(',', '.');
                       const num = parseFloat(normalized);
@@ -82,8 +101,9 @@ export const ProductPurchaseSection: React.FC<ProductPurchaseSectionProps> = ({
                       return !isNaN(num) ? (num * quantity).toFixed(2) + (currency ? ' ' + currency : '') : originalPrice;
                     })()}
                   </span>
+                  {/* Sale Price: Shows discounted total in red */}
                   <span className="font-normal text-[18px] leading-[14px] text-[#C02929]">
-                    {/* Multiply salePrice by quantity */}
+                    {/* Price Calculation: Same logic for sale price */}
                     {(() => {
                       const normalized = salePrice.replace(/[^\d.,]/g, '').replace(',', '.');
                       const num = parseFloat(normalized);
@@ -93,6 +113,7 @@ export const ProductPurchaseSection: React.FC<ProductPurchaseSectionProps> = ({
                   </span>
                 </>
               ) : (
+                // Regular Price: No sale, just show original price × quantity
                 <span className="font-normal text-[18px] leading-[14px] text-black">
                   {(() => {
                     const normalized = originalPrice.replace(/[^\d.,]/g, '').replace(',', '.');
@@ -107,20 +128,22 @@ export const ProductPurchaseSection: React.FC<ProductPurchaseSectionProps> = ({
         </div>
       </div>
 
-      {/* Quantity Item Images */}
+      {/* Quantity Item Images: Visual quantity selector with discount badges */}
       <ProductQuantityImageSection
         selected={quantity}
         onSelect={onQuantityChange}
       />
       
-      {/* Action Buttons */}
+      {/* Action Buttons: Primary (Buy Now) and Secondary (Add to Cart) actions */}
       <div className="flex flex-col gap-2 mt-2 sm:flex-row">
+        {/* Buy Now Button: Primary action - solid background */}
         <button
           className="flex-1 bg-[#8EF7FB] rounded-[3.3px] py-3 text-[19px] font-medium text-black hover:bg-[#6ee7f7] transition transform duration-300 cursor-pointer active:bg-[#8EF7FB]"
           onClick={onBuyNow}
         >
           Buy now
         </button>
+        {/* Add to Cart Button: Secondary action - outlined style */}
         <button
           className="flex-1 border-2 border-[#8EF7FB] bg-white rounded-[3.3px] py-3 text-[19px] font-medium text-black hover:bg-[#e0f7fa] transition transform duration-300 cursor-pointer active:bg-[#8EF7FB]"
           onClick={onAddToCart}
@@ -129,14 +152,14 @@ export const ProductPurchaseSection: React.FC<ProductPurchaseSectionProps> = ({
         </button>
       </div>
 
-      {/* Guarantee/Shipping/Returns */}
+      {/* Guarantee/Shipping/Returns: Trust indicators in a subtle background */}
       <div className="flex flex-col sm:flex-row justify-between items-center bg-[#8EF7FB]/12 px-4 py-4 mt-2 gap-2">
         <span className="text-[15px] text-[#343232]">30 Day Guarantee</span>
         <span className="text-[15px] text-[#343232]">Free Shipping</span>
         <span className="text-[15px] text-[#343232]">Free Returns</span>
       </div>
 
-      {/* Shipping/Express/Pickup with icons */}
+      {/* Shipping Options: Display different shipping methods with icons and estimated delivery */}
       <div className="flex flex-col gap-4 mt-4 w-full">
         <div className="flex flex-row items-center gap-4">
           {/* Truck Icon */}
