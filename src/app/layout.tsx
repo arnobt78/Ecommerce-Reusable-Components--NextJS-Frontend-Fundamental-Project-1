@@ -30,9 +30,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://freelance-qllp.vercel.app"),
   title: {
-    default: "Reusable E-Commerce UI Components – Next.js Frontend Tutorial",
+    default:
+      "E-Commerce Reusable Components – Next.js, Tailwind CSS Frontend Fundamental Tutorial 1",
     template:
-      "%s | Reusable E-Commerce UI Components – Next.js Frontend Tutorial", // Child pages can use: title: "Page Name" and it becomes "Page Name | Reusable E-Commerce UI Components – Next.js Frontend Tutorial"
+      "%s | E-Commerce Reusable Components – Next.js, Tailwind CSS Frontend Fundamental Tutorial 1", // Child pages can use: title: "Page Name" and it becomes "Page Name | E-Commerce Reusable Components – Next.js, Tailwind CSS Frontend Fundamental Tutorial 1"
   },
   description:
     "Production-ready, reusable Next.js e-commerce UI components with pixel-perfect Figma design. Features dynamic category filters, product cards, pagination, and responsive layouts built with TypeScript and Tailwind CSS.",
@@ -68,7 +69,7 @@ export const metadata: Metadata = {
   authors: [
     {
       name: "Arnob Mahmud",
-      url: "https://arnob-mahmud.vercel.app/",
+      url: "https://www.arnobmahmud.com/",
     },
   ],
   creator: "Arnob Mahmud",
@@ -88,8 +89,10 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://freelance-qllp.vercel.app",
-    siteName: "Reusable E-Commerce UI Components – Next.js Frontend Tutorial",
-    title: "Reusable E-Commerce UI Components – Next.js Frontend Tutorial",
+    siteName:
+      "E-Commerce Reusable Components – Next.js, Tailwind CSS Frontend Fundamental Tutorial 1",
+    title:
+      "E-Commerce Reusable Components – Next.js, Tailwind CSS Frontend Fundamental Tutorial 1",
     description:
       "Production-ready, reusable Next.js e-commerce UI components with pixel-perfect Figma design. Features dynamic category filters, product cards, pagination, and responsive layouts built with TypeScript and Tailwind CSS.",
     images: [
@@ -116,7 +119,8 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://freelance-qllp.vercel.app",
   },
-  category: "E-commerce UI Components – Next.js Frontend Tutorial",
+  category:
+    "E-Commerce Reusable Components – Next.js, Tailwind CSS Frontend Fundamental Tutorial 1",
   classification: "Web Development, UI Components, Next.js",
 };
 

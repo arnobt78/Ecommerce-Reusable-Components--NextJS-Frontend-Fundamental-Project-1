@@ -1,5 +1,11 @@
 # E-Commerce Reusable Components – Next.js, Tailwind CSS Frontend Fundamental Tutorial 1
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4-blue)](https://tailwindcss.com/)
+[![React](https://img.shields.io/badge/React-19-blue)](https://react.dev/)
+
 A comprehensive, production-ready collection of reusable e-commerce UI components built with Next.js, TypeScript, and Tailwind CSS. This project demonstrates modern frontend development practices, component architecture, and pixel-perfect design implementation.
 
 **Live Demo:** [https://freelance-qllp.vercel.app/](https://freelance-qllp.vercel.app/)
@@ -298,7 +304,6 @@ This project uses Next.js App Router with the following routes:
 - **Component**: `ProductDetailLayout`
 - **Features**: Product details, purchase section, related products
 - **Query Parameters**:
-
   - `idx` (number): Product index in the products array
   - Example: `/product-detail?idx=0`
 
@@ -539,7 +544,7 @@ GET /api/cart              # Get cart items
 ```typescript
 const { page, setPage, totalPages, paginated } = useProductPagination(
   products,
-  6 // items per page
+  6, // items per page
 );
 ```
 
@@ -764,7 +769,7 @@ const filteredProducts = allProducts.filter(
     (filters.flavors.length === 0 ||
       filters.flavors.includes(product.flavor)) &&
     (filters.strength.length === 0 ||
-      filters.strength.includes(product.strength))
+      filters.strength.includes(product.strength)),
 );
 ```
 
@@ -878,5 +883,3 @@ If you have any questions or want to share your work, reach out via GitHub or my
 **Enjoy building and learning!** 🚀
 
 Thank you! 😊
-
-
