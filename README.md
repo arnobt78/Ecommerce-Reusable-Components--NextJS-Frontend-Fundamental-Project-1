@@ -1,4 +1,4 @@
-# Reusable E-Commerce UI Components – Next.js Frontend Tutorial
+# E-Commerce Reusable Components – Next.js, Tailwind CSS Frontend Fundamental Tutorial 1
 
 A comprehensive, production-ready collection of reusable e-commerce UI components built with Next.js, TypeScript, and Tailwind CSS. This project demonstrates modern frontend development practices, component architecture, and pixel-perfect design implementation.
 
@@ -865,14 +865,18 @@ The codebase is well-documented with comments explaining functionality, making i
 
 ---
 
+## License
+
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT). Feel free to use, modify, and distribute the code as per the terms of the license.
+
 ## Happy Coding! 🎉
 
-Feel free to use this project repository and extend this project further!
+This is an **open-source project** - feel free to use, enhance, and extend this project further!
 
-If you have any questions or want to share your work, reach out via GitHub or my portfolio at [https://arnob-mahmud.vercel.app/](https://arnob-mahmud.vercel.app/).
+If you have any questions or want to share your work, reach out via GitHub or my portfolio at [https://www.arnobmahmud.com](https://www.arnobmahmud.com).
 
 **Enjoy building and learning!** 🚀
 
 Thank you! 😊
 
----
+
